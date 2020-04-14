@@ -25,6 +25,11 @@ socketio.on('end_recording', function(msg) {
     endRecording()
 });
 
+navigator.getUserMedia = ( navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia);
+
 startRecording = function() {
     startRecording.disabled = true;
     navigator.getUserMedia({
