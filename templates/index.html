@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="static/js/socket.io.min.js"></script>
+    
+    </head>
+<body>
+<div id="log">
+</div>
+<button type="button" id="start" onclick="send_start_request()">Start Recording</button>
+<br/>
+<button type="button" id="stop" onclick="send_end_request()">Stop Recording</button>
+<script>
+append_to_log = function(msg){
+                var element = document.querySelector("#log");
+                var child = document.createElement("P");
+                child.innerHTML = msg;
+                element.appendChild(child);
+            }
+
+send_empty_post_request = function(url){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send();
+}
+
+send_start_request  = function(){
+    var url = "{{ url_for('.start_recording') }}"
+    send_empty_post_request(url)
+}
+
+send_end_request = function(){
+    var url = "{{ url_for('.end_recording') }}"
+    send_empty_post_request(url)
+}
+
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/admin');
+socket.on('message', function(msg) {
+    append_to_log(msg.message)
+});
+
+
+
+</script>
+</body>
+</html>
